@@ -12,6 +12,7 @@ from wechaty import (
 )
 
 from src.googletranslate import get_translation
+from src.ernie import get_answer
 
 
 async def on_message(msg: Message):
@@ -22,7 +23,14 @@ async def on_message(msg: Message):
         return
     if msg.type() != wechaty.Message.Type.MESSAGE_TYPE_TEXT:
         return
-    await msg.say(f"原文：{msg.text()} | 翻译：{get_translation(msg.text())}")
+    if msg.room().room_id != '19900345232@chatroom':
+        return
+    text = msg.text()
+    await msg.say(f"原文：{text} | 翻译：{get_translation(text)}")
+    # if text.startswith('翻译'):
+    #     text = text[2:]
+    #     await msg.say(f"原文：{text} | 翻译：{get_translation(text)}")
+    # await msg.say(f"{get_answer(text)}")
 
 
 async def on_scan(
